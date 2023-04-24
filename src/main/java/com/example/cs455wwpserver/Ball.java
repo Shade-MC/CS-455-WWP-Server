@@ -90,8 +90,8 @@ public class Ball {
 
 
     public String toString(){
-        return  "Position: " + this.position.toString() + "\n" +
-                "Speed: " + this.speed.toString() + "\n" +
-                "Acceleration: " + this.acceleration.toString();
+        return  this.position.x + "," + this.position.y + "," + this.position.z + "," +  "\n" +
+                this.speed.x + "," + this.speed.y + "," + this.speed.z + "," +  "\n" +
+                this.acceleration.x + "," + this.acceleration.y + "," + this.acceleration.z + "," +  "\n";
     }
 }

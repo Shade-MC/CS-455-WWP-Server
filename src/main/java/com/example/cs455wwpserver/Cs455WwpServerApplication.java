@@ -20,8 +20,8 @@ public class Cs455WwpServerApplication {
 
     @GetMapping("/getPosition")
     public String givePosition() {
+        System.out.println("connection");
         long curTime = System.nanoTime();
-        System.out.printf("curTime: %d\nlastTime: %d%n", curTime, this.lastTime);
         gameBall.updatePosition((curTime - this.lastTime) / 1E9);
         this.lastTime = curTime;
         return gameBall.toString();
