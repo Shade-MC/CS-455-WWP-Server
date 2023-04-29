@@ -50,12 +50,13 @@ public class Cs455WwpServerApplication {
             long timeDiff = Math.abs(Duration.between(clientTime, this.ballBean.lastLandingTime()).getSeconds());
             if(distance <= 100 && timeDiff <= 10){
                 //TODO Actually update the score
-                mesage = "Hit Success";
+                mesage = "Success";
+            }else{
+                mesage = "Fail";
             }
-            mesage = "Hit to far or to late";
         } catch (org.json.simple.parser.ParseException e) {
             System.out.println(e.getMessage());
-            mesage = "Hit Failed";
+            mesage = "Fail";
         }
 
         return ResponseEntity.ok(mesage);
