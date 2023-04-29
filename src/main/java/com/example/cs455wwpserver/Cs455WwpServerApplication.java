@@ -1,20 +1,19 @@
 package com.example.cs455wwpserver;
 
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.vecmath.Vector3d;
 import java.time.Duration;
 import java.time.Instant;
-
-import static java.lang.Thread.sleep;
 
 @SpringBootApplication
 @RestController
@@ -38,7 +37,7 @@ public class Cs455WwpServerApplication {
 
     @PostMapping("/hitBall")
     public ResponseEntity<String> checkHit(@RequestBody String body){
-        String mesage = null;
+        String mesage;
         try {
             JSONObject obj = (JSONObject) new JSONParser().parse(body);
             LocationPing locationPing = new LocationPing((double) obj.get("latitude"), (double) obj.get("longitude"),
