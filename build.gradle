@@ -16,12 +16,9 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.session:spring-session-core'
-    implementation 'com.google.ar.sceneform:core:1.17.1'
-    implementation 'com.google.ar.sceneform:sceneform-base:1.17.1'
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'javax.vecmath:vecmath:1.5.2'
+    implementation 'org.apache.clerezza.ext:org.json.simple:0.4'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
 }
 
 tasks.named('test') {
