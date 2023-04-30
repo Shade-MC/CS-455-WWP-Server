@@ -12,15 +12,19 @@ public class Ball {
     private static final double EARTH_RADIUS = 6378137.0; // in meters
 
     public Ball(){
-        this.position =  new Vector3d(45, 45, 0);
-        this.speed = new Vector3d(1000, 1000, 1000);
-        this.acceleration = new Vector3d(0,0,(float) -9.8);
+        randomPosition();
     }
 
     public Ball(Vector3d position, Vector3d speed, Vector3d acceleration){
         this.position = position;
         this.speed = speed;
         this.acceleration = acceleration;
+    }
+
+    public void randomPosition(){
+        this.position =  new Vector3d((Math.random() * 360) - 180, (Math.random() * 180) - 90, 10);
+        this.speed = new Vector3d((Math.random() * 2000) - 1000, (Math.random() * 2000) - 1000, 1000);
+        this.acceleration = new Vector3d(0,0,(float) -9.8);
     }
 
     public void updatePosition(double deltaTime){
