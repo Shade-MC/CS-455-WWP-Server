@@ -19,6 +19,9 @@ import java.time.Instant;
 @RestController
 public class Cs455WwpServerApplication {
 
+    private int scoreA = 0;
+    private int scoreB = 0;
+
     @Autowired
     private BallBean ballBean;
     public static void main(String[] args) {
@@ -37,8 +40,9 @@ public class Cs455WwpServerApplication {
         String mesage;
         try {
             JSONObject obj = (JSONObject) new JSONParser().parse(body);
+            System.out.println(obj);
             LocationPing locationPing = new LocationPing((double) obj.get("latitude"), (double) obj.get("longitude"),
-                    (String) obj.get("userId"), (String) obj.get("time"));
+                    (String) obj.get("userId"), (String) obj.get("time"), (String) obj.get("team"));
 
             Vector3d ballPosition = this.ballBean.getLastLandingPosition();
             double distance = BallBean.distance(ballPosition.x, ballPosition.y, locationPing.getLatitude(), locationPing.getLongitude());
@@ -46,8 +50,12 @@ public class Cs455WwpServerApplication {
             Instant clientTime = Instant.parse(locationPing.getTime());
             long timeDiff = Math.abs(Duration.between(clientTime, this.ballBean.lastLandingTime()).getSeconds());
             if(distance <= 100 && timeDiff <= 10){
-                //TODO Actually update the score
                 mesage = "Success";
+                if(locationPing.getTeam().equals("A")){
+                    scoreA += 1;
+                }else{
+                    scoreB += 1;
+                }
             }else{
                 mesage = "Fail";
             }
@@ -57,6 +65,12 @@ public class Cs455WwpServerApplication {
         }
 
         return ResponseEntity.ok(mesage);
+    }
+
+    @GetMapping("/getScore")
+    public String giveScore() {
+        System.out.println("getScore: connection");
+        return "Team A Score: " + scoreA + ", " + "Team B Score: " + scoreB;
     }
 
 }
