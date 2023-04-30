@@ -19,6 +19,9 @@ import java.time.Instant;
 @RestController
 public class Cs455WwpServerApplication {
 
+    private int scoreA = 0;
+    private int scoreB = 0;
+
     @Autowired
     private BallBean ballBean;
     public static void main(String[] args) {
@@ -48,8 +51,10 @@ public class Cs455WwpServerApplication {
             if(distance <= 100 && timeDiff <= 10){
                 //TODO Actually update the score
                 mesage = "Success";
+                scoreA = scoreA + 1;
             }else{
                 mesage = "Fail";
+                scoreA = scoreA + 1;
             }
         } catch (org.json.simple.parser.ParseException e) {
             System.out.println(e.getMessage());
@@ -57,6 +62,13 @@ public class Cs455WwpServerApplication {
         }
 
         return ResponseEntity.ok(mesage);
+    }
+
+    @GetMapping("/getScore")
+    public int giveScore() {
+        System.out.println("getScore: connection");
+        scoreA = scoreA + 1;
+        return scoreA;
     }
 
 }
