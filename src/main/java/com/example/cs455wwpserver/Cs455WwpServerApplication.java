@@ -40,8 +40,9 @@ public class Cs455WwpServerApplication {
         String mesage;
         try {
             JSONObject obj = (JSONObject) new JSONParser().parse(body);
+            System.out.println(obj);
             LocationPing locationPing = new LocationPing((double) obj.get("latitude"), (double) obj.get("longitude"),
-                    (String) obj.get("userId"), (String) obj.get("time"));
+                    (String) obj.get("userId"), (String) obj.get("time"), (String) obj.get("team"));
 
             Vector3d ballPosition = this.ballBean.getLastLandingPosition();
             double distance = BallBean.distance(ballPosition.x, ballPosition.y, locationPing.getLatitude(), locationPing.getLongitude());
@@ -49,12 +50,14 @@ public class Cs455WwpServerApplication {
             Instant clientTime = Instant.parse(locationPing.getTime());
             long timeDiff = Math.abs(Duration.between(clientTime, this.ballBean.lastLandingTime()).getSeconds());
             if(distance <= 100 && timeDiff <= 10){
-                //TODO Actually update the score
                 mesage = "Success";
-                scoreA = scoreA + 1;
+                if(locationPing.getTeam().equals("A")){
+                    scoreA += 1;
+                }else{
+                    scoreB += 1;
+                }
             }else{
                 mesage = "Fail";
-                scoreA = scoreA + 1;
             }
         } catch (org.json.simple.parser.ParseException e) {
             System.out.println(e.getMessage());
@@ -65,10 +68,9 @@ public class Cs455WwpServerApplication {
     }
 
     @GetMapping("/getScore")
-    public int giveScore() {
+    public String giveScore() {
         System.out.println("getScore: connection");
-        scoreA = scoreA + 1;
-        return scoreA;
+        return scoreA + "," + scoreB;
     }
 
 }
