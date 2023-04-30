@@ -70,7 +70,7 @@ public class Cs455WwpServerApplication {
     @GetMapping("/getScore")
     public String giveScore() {
         System.out.println("getScore: connection");
-        return scoreA + "," + scoreB;
+        return "Team A Score: " + scoreA + ", " + "Team B Score: " + scoreB;
     }
 
 }
