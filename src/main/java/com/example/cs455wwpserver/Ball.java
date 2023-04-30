@@ -22,7 +22,7 @@ public class Ball {
     }
 
     public void randomPosition(){
-        this.position =  new Vector3d((Math.random() * 360) - 180, (Math.random() * 180) - 90, 0);
+        this.position =  new Vector3d((Math.random() * 360) - 180, (Math.random() * 180) - 90, 10);
         this.speed = new Vector3d((Math.random() * 2000) - 1000, (Math.random() * 2000) - 1000, 1000);
         this.acceleration = new Vector3d(0,0,(float) -9.8);
     }

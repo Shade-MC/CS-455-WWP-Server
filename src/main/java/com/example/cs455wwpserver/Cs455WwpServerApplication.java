@@ -1,8 +1,8 @@
 package com.example.cs455wwpserver;
 
-import jakarta.annotation.PostConstruct;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +18,12 @@ import java.time.Instant;
 @SpringBootApplication
 @RestController
 public class Cs455WwpServerApplication {
+
+    @Autowired
     private BallBean ballBean;
     public static void main(String[] args) {
 
         SpringApplication.run(Cs455WwpServerApplication.class, args);
-    }
-
-    @PostConstruct
-    private void init(){
-        this.ballBean = new BallBean();
     }
 
     @GetMapping("/getPosition")

@@ -1,5 +1,6 @@
 package com.example.cs455wwpserver;
 
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -7,6 +8,7 @@ import javax.vecmath.Vector3d;
 import java.time.Instant;
 
 @Component
+@EnableScheduling
 public class BallBean {
 
     private final Ball gameBall;
