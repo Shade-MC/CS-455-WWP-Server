@@ -47,6 +47,11 @@ public class BallBean {
         this.lastTime = curTime;
     }
 
+    @Scheduled(fixedRate = 60000)
+    public void getWing(){
+        gameBall.getWind();
+    }
+
     public String getBallString(){
         return this.gameBall.toString();
     }

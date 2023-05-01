@@ -1,8 +1,17 @@
 package com.example.cs455wwpserver;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.springframework.boot.json.JsonParser;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.vecmath.Vector3d;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+//import org.json.*;
+
 
 @Service
 public class Ball {
@@ -10,6 +19,8 @@ public class Ball {
     private Vector3d speed;
     private Vector3d acceleration;
     private static final double EARTH_RADIUS = 6378137.0; // in meters
+
+    String weatherAPIKey = "46138978d6f0483aa95213542230105"; //set to the api key from www.weatherapi.com
 
     public Ball(){
         randomPosition();
@@ -64,8 +75,52 @@ public class Ball {
 
         if (this.position.z < 0) this.position.z = 0;
 
+        else {
+            //api key not set, ignore and set accel to 0
+            setAcceleration(new Vector3d(0, 0, this.acceleration.z));
+        }
+
         this.speed.scaleAdd(deltaTime, this.acceleration, this.speed);
 
+    }
+
+    public void getWind(){
+        //update ball accel based on wind speed
+        if(weatherAPIKey.equals("46138978d6f0483aa95213542230105")) {
+            String urlString = "https://api.weatherapi.com/v1/current.json?key=" + weatherAPIKey + "&q=" + this.position.y + "," + this.position.x + "&aqi=no";
+            String weatherJsonString = "";
+            try {
+                URL weatherURL = new URL(urlString);
+                HttpURLConnection connection = (HttpURLConnection) weatherURL.openConnection();
+                connection.setRequestMethod("GET");
+                connection.connect();
+                int responseCode = connection.getResponseCode();
+                if(responseCode != 200)
+                    throw new RuntimeException("HttpResponseCode: " + responseCode);
+                else {
+                    //scan the json out of the url
+                    Scanner scan = new Scanner(weatherURL.openStream());
+                    while(scan.hasNext()) {
+                        weatherJsonString += scan.nextLine();
+                    }
+                    //parse the values out of the json
+                    JSONObject weatherJSON = (JSONObject) new JSONParser().parse(weatherJsonString);
+//                    String weatherCurrentJSONString = (String) weatherJSON.get("current");
+//                    JSONObject weatherCurrentJSON = (JSONObject) new JSONParser().parse(weatherCurrentJSONString);
+                    JSONObject weatherCurrentJSON = (JSONObject) weatherJSON.get("current");
+                    double windSpeed = (double) weatherCurrentJSON.get("wind_kph");
+                    long windDir = (long) weatherCurrentJSON.get("wind_degree");
+                    double windDirRad = Math.toRadians(windDir);
+
+                    //math is probably off here
+                    setAcceleration(new Vector3d((windSpeed * Math.cos(windDirRad)) / 3.6, windSpeed * Math.sin(windDirRad) / 3.6, this.acceleration.z));
+
+                }
+            } catch (Exception e) {
+                //something went wrong when trying to connect, just set accel to 0
+                setAcceleration(new Vector3d(0, 0, this.acceleration.z));
+            }
+        }
     }
 
     public Vector3d getSpeed() {
