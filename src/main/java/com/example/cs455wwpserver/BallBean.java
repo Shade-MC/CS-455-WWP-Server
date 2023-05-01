@@ -47,7 +47,7 @@ public class BallBean {
         this.lastTime = curTime;
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 6000)
     public void getWing(){
         gameBall.getWind();
     }

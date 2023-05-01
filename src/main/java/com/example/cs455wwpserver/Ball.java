@@ -75,11 +75,6 @@ public class Ball {
 
         if (this.position.z < 0) this.position.z = 0;
 
-        else {
-            //api key not set, ignore and set accel to 0
-            setAcceleration(new Vector3d(0, 0, this.acceleration.z));
-        }
-
         this.speed.scaleAdd(deltaTime, this.acceleration, this.speed);
 
     }
@@ -87,7 +82,7 @@ public class Ball {
     public void getWind(){
         //update ball accel based on wind speed
         if(weatherAPIKey.equals("46138978d6f0483aa95213542230105")) {
-            String urlString = "https://api.weatherapi.com/v1/current.json?key=" + weatherAPIKey + "&q=" + this.position.y + "," + this.position.x + "&aqi=no";
+            String urlString = "https://api.weatherapi.com/v1/current.json?key=" + weatherAPIKey + "&q=" + (int) this.position.y + "," + (int) this.position.x + "&aqi=no";
             String weatherJsonString = "";
             try {
                 URL weatherURL = new URL(urlString);
